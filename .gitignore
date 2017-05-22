@@ -1,0 +1,12 @@
+/node_modules
+/dist
+/.tmp
+/.sass-cache
+/bower_components
+
+#Wikidata dumps
+/wikidata/dump/
+
+#Python
+__pycache__/
+*.py[cod]

@@ -1,0 +1,25 @@
+#https://query.wikidata.org/
+
+#queries:
+
+#countries:
+SELECT ?countries
+WHERE {
+  ?countries wdt:P31 wd:Q6256.
+}
+#any instance of country(Q6256)
+
+#planets:
+SELECT ?objects
+WHERE {
+  ?objects wdt:P31/wdt:P279* wd:Q634 .
+}
+#every entity that is an instance of a subclass of planet(Q634)
+
+#people:
+SELECT ?person
+WHERE {
+  ?person wdt:P31 wd:Q5 .
+  ?person wdt:P27 wd:Q298 . #in this case to grab a smaller sample we used only Chileans
+}
+#every entity that is an instance of Human(Q5)
