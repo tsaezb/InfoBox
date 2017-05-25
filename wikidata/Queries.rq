@@ -23,3 +23,11 @@ WHERE {
   ?person wdt:P27 wd:Q298 . #in this case to grab a smaller sample we used only Chileans
 }
 #every entity that is an instance of Human(Q5)
+
+
+
+#for canada json file
+SELECT ?p ?v
+WHERE {
+  wd:Q16 ?p ?v .
+}

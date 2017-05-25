@@ -8,9 +8,10 @@
  * Controller of the infoBoxApp
  */
 angular.module('infoBoxApp')
-  .controller('MainCtrl', function ($scope, $uibModal){
+  .controller('MainCtrl', function ($scope, $uibModal, $http){
 
     $scope.regex = /^[\d]+$/;
+    $scope.data_flag = false;
 
     $scope.contact_info = [
       {
@@ -30,15 +31,23 @@ angular.module('infoBoxApp')
         templateUrl: 'views/contact-us.html',
         scope: $scope,
         size: 'md'
-      }).result.then(function(){}, function(r){})
+      }).result.then(function(){}, function(r){});
     };
 
     $scope.search_entity_info = function(id){
-      if(regex.test(id)){
-        console.log(id);
-      }
-      else{
-      }
+      id = "Q" + id;
+      $scope.data_flag = false;
+
+      $http.get("/wikidata/file.json")
+        .then(function(data){
+          $scope.data_flag= true;
+          $scope.entity_data = data.data;
+          $scope.entity_id = id;
+        },
+        function(data){
+          console.log("there was an error");
+        });
+
     };
 
   });
