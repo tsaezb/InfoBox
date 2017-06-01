@@ -10,9 +10,9 @@ WHERE {
 #any instance of country(Q6256)
 
 #planets:
-SELECT ?objects
+SELECT ?planets
 WHERE {
-  ?objects wdt:P31/wdt:P279* wd:Q634 .
+  ?planets wdt:P31/wdt:P279* wd:Q634 .
 }
 #every entity that is an instance of a subclass of planet(Q634)
 
