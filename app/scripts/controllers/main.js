@@ -51,9 +51,9 @@ angular.module('infoBoxApp')
 
     $scope.get_entity_info = function(id){
       id = "wd:Q" + id;
-      $scope.q = "SELECT ?prop ?val WHERE { " + id + " ?prop ?val . }";
+      var q = "SELECT ?prop ?val WHERE { " + id + " ?prop ?val . }";
 
-      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI($scope.q))
+      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(q))
         .then(function(data){
           if(data.data.results.bindings.length !== 0){
             $scope.alerts = [];

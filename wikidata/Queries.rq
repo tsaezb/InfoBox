@@ -26,7 +26,7 @@ WHERE {
 
 
 
-#for canada json file
+#for direct entity query
 SELECT ?p ?v
 WHERE {
   wd:Q16 ?p ?v .
