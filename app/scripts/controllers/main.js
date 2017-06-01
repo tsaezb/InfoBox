@@ -12,6 +12,21 @@ angular.module('infoBoxApp')
 
     $scope.regex = /^[\d]+$/;
     $scope.data_flag = false;
+    $scope.alerts = [];
+
+    $scope.addAlert = function(str) {
+      if ($scope.alerts !== []) {
+        $scope.alerts = [];
+        $scope.alerts.push({ type: 'danger', msg: str });
+      }
+      else {
+        $scope.alerts.push({ type: 'danger', msg: str });
+      }
+    };
+
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+    };
 
     $scope.contact_info = [
       {
@@ -34,18 +49,25 @@ angular.module('infoBoxApp')
       }).result.then(function(){}, function(r){});
     };
 
-    $scope.search_entity_info = function(id){
-      id = "Q" + id;
-      $scope.data_flag = false;
+    $scope.get_entity_info = function(id){
+      id = "wd:Q" + id;
+      $scope.q = "SELECT ?prop ?val WHERE { " + id + " ?prop ?val . }";
 
-      $http.get("/wikidata/file.json")
+      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI($scope.q))
         .then(function(data){
-          $scope.data_flag= true;
-          $scope.entity_data = data.data;
-          $scope.entity_id = id;
+          if(data.data.results.bindings.length !== 0){
+            $scope.alerts = [];
+            $scope.data_flag = true;
+            $scope.entity_id = id;
+            $scope.entity_data = data.data.results.bindings;
+            console.log($scope.entity_data);
+          }
+          else{
+            $scope.addAlert("The entity does not exist!");
+          }
         },
-        function(data){
-          console.log("there was an error");
+        function(err){
+          $scope.addAlert("There was an error processing the query!");
         });
 
     };

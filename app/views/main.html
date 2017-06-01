@@ -1,18 +1,20 @@
+<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>
+
 <div class="jumbotron">
   <form class="form-inline">
     <div class="input-group">
       <div class="input-group-addon">Q</div>
       <input ng-model="search_id" class="form-control" type="text" placeholder="Type Wikidata ID">
     </div>
-    <button ng-disabled="!regex.test(search_id)" ng-click="search_entity_info(search_id)" class="btn btn-primary">Get InfoBox</button>
+    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id)" class="btn btn-primary">Get InfoBox</button>
   </form>
 </div>
 
 <div ng-show="data_flag">
   <table align="center" class="table table-bordered table-striped">
     <tr ng-repeat="entry in entity_data">
-      <th>{{entry.p}}:</th>
-      <td>{{entry.v}}</td>
+      <th>{{entry.prop.value}}:</th>
+      <td>{{entry.val.value}}</td>
     </tr>
   </table>
 </div>
