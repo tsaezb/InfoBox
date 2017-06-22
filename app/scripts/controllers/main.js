@@ -60,7 +60,21 @@ angular.module('infoBoxApp')
             $scope.data_flag = true;
             $scope.entity_id = id;
             $scope.entity_data = data.data.results.bindings;
-            console.log($scope.entity_data);
+
+            $scope.info_box = [];
+            for (var i = 0; i < $scope.entity_data.length; i++) {
+              //
+              if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/P") === 0) {
+                $scope.info_box.push($scope.entity_data[i]);
+              }
+              else if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
+              }
+              else if ($scope.entity_data[i].val.type === "literal"){
+                if ($scope.entity_data[i].val["xml:lang"] === "en" || $scope.entity_data[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || $scope.entity_data[i].val["xml:lang"] === undefined){
+                  $scope.info_box.push($scope.entity_data[i]);
+                }
+              }
+            }
           }
           else{
             $scope.addAlert("The entity does not exist!");
