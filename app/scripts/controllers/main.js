@@ -62,12 +62,13 @@ angular.module('infoBoxApp')
             $scope.entity_data = data.data.results.bindings;
 
             $scope.info_box = [];
+            //filtering by prop type & lang
             for (var i = 0; i < $scope.entity_data.length; i++) {
               //
               if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/P") === 0) {
-                $scope.info_box.push($scope.entity_data[i]);
               }
               else if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
+                $scope.info_box.push($scope.entity_data[i]);
               }
               else if ($scope.entity_data[i].val.type === "literal"){
                 if ($scope.entity_data[i].val["xml:lang"] === "en" || $scope.entity_data[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || $scope.entity_data[i].val["xml:lang"] === undefined){
@@ -75,6 +76,8 @@ angular.module('infoBoxApp')
                 }
               }
             }
+            //random order & select first 10
+            $scope.info_box = _.shuffle($scope.info_box).slice(0,10);
           }
           else{
             $scope.addAlert("The entity does not exist!");
