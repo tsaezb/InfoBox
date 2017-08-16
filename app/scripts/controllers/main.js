@@ -51,7 +51,7 @@ angular.module('infoBoxApp')
 
     $scope.get_entity_info = function(id){
       id = "wd:Q" + id;
-      var q = "SELECT ?prop ?val WHERE { " + id + " ?prop ?val . }";
+      var q = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = 'en')}";
 
       $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(q))
         .then(function(data){
@@ -64,10 +64,9 @@ angular.module('infoBoxApp')
             $scope.info_box = [];
             //filtering by prop type & lang
             for (var i = 0; i < $scope.entity_data.length; i++) {
-              //
-              if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/P") === 0) {
+              if ($scope.entity_data[i].pLabel.value.indexOf("http://www.wikidata.org/prop/P") === 0) {
               }
-              else if ($scope.entity_data[i].prop.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
+              else if ($scope.entity_data[i].pLabel.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
                 $scope.info_box.push($scope.entity_data[i]);
               }
               else if ($scope.entity_data[i].val.type === "literal"){
