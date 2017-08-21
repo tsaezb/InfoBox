@@ -6,7 +6,7 @@
       <div class="input-group-addon">Q</div>
       <input ng-model="search_id" class="form-control" type="text" placeholder="Type Wikidata ID">
     </div>
-    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id)" class="btn btn-primary">Get InfoBox</button>
+    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id,lang)" class="btn btn-primary">Get InfoBox</button>
   </form>
 </div>
 

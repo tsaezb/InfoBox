@@ -14,6 +14,9 @@ angular.module('infoBoxApp')
     $scope.data_flag = false;
     $scope.alerts = [];
 
+    //add form for this field later
+    $scope.lang = "en";
+
     $scope.addAlert = function(str) {
       if ($scope.alerts !== []) {
         $scope.alerts = [];
@@ -49,9 +52,9 @@ angular.module('infoBoxApp')
       }).result.then(function(){}, function(r){});
     };
 
-    $scope.get_entity_info = function(id){
+    $scope.get_entity_info = function(id, lang){
       id = "wd:Q" + id;
-      var q = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = 'en')}";
+      var q = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = '" + lang + "')}";
 
       $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(q))
         .then(function(data){
@@ -70,7 +73,7 @@ angular.module('infoBoxApp')
                 $scope.info_box.push($scope.entity_data[i]);
               }
               else if ($scope.entity_data[i].val.type === "literal"){
-                if ($scope.entity_data[i].val["xml:lang"] === "en" || $scope.entity_data[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || $scope.entity_data[i].val["xml:lang"] === undefined){
+                if ($scope.entity_data[i].val["xml:lang"] === lang || $scope.entity_data[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || $scope.entity_data[i].val["xml:lang"] === undefined){
                   $scope.info_box.push($scope.entity_data[i]);
                 }
               }
