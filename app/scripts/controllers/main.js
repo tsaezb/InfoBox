@@ -14,6 +14,7 @@ angular.module('infoBoxApp')
     $scope.data_flag = false;
     $scope.alerts = [];
 
+
     //add form for this field later
     $scope.lang = "en";
 
@@ -54,41 +55,68 @@ angular.module('infoBoxApp')
 
     $scope.get_entity_info = function(id, lang){
       id = "wd:Q" + id;
-      var q = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = '" + lang + "')}";
+      var query = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = '" + lang + "')}";
 
-      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(q))
+      $scope.get_wikidata_info(query, lang);
+    };
+
+    //quering function
+    $scope.get_wikidata_info = function(query, lang){
+
+      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
         .then(function(data){
+
           if(data.data.results.bindings.length !== 0){
             $scope.alerts = [];
             $scope.data_flag = true;
-            $scope.entity_id = id;
             $scope.entity_data = data.data.results.bindings;
 
-            $scope.info_box = [];
-            //filtering by prop type & lang
-            for (var i = 0; i < $scope.entity_data.length; i++) {
-              if ($scope.entity_data[i].pLabel.value.indexOf("http://www.wikidata.org/prop/P") === 0) {
-              }
-              else if ($scope.entity_data[i].pLabel.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
-                $scope.info_box.push($scope.entity_data[i]);
-              }
-              else if ($scope.entity_data[i].val.type === "literal"){
-                if ($scope.entity_data[i].val["xml:lang"] === lang || $scope.entity_data[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || $scope.entity_data[i].val["xml:lang"] === undefined){
-                  $scope.info_box.push($scope.entity_data[i]);
-                }
-              }
-            }
+            $scope.info_box = $scope.filter_properties(data.data.results.bindings, lang);
+
             //random order & select first 10
-            $scope.info_box = _.shuffle($scope.info_box).slice(0,10);
+            $scope.info_box = $scope.baseline_infobox($scope.info_box);
           }
+
           else{
             $scope.addAlert("The entity does not exist!");
           }
-        },
-        function(err){
+        },function(err){
           $scope.addAlert("There was an error processing the query!");
         });
-
     };
 
-  });
+
+    //filter function
+    $scope.filter_properties = function(properties_list, lang){
+
+      var filtered_pairs = [];
+
+      for (var i = 0; i < properties_list.length; i++) {
+
+        //ignoring non-direct properties
+        if (properties_list[i].pLabel.value.indexOf("http://www.wikidata.org/prop/P") === 0) {}
+
+        //adding direct properties
+        else if (properties_list[i].pLabel.value.indexOf("http://www.wikidata.org/prop/direct") === 0) {
+          filtered_pairs.push(properties_list[i]);
+        }
+
+            //check for literals in given language
+        else if (properties_list[i].val.type === "literal"){
+
+          if (properties_list[i].val["xml:lang"] === lang || properties_list[i].datatype === "http://www.w3.org/2001/XMLSchema#integer" || properties_list[i].val["xml:lang"] === undefined){
+            filtered_pairs.push(properties_list[i]);
+          }
+        }
+      }
+
+      return filtered_pairs;
+    };
+
+    //this function creates the baseline infobox for each entity, selecting 10 properties at random
+    $scope.baseline_infobox = function(properties){
+      return _.shuffle(properties).slice(0,10);
+    };
+
+
+    });
