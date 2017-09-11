@@ -54,24 +54,24 @@ angular.module('infoBoxApp')
     };
 
     $scope.get_entity_info = function(id, lang){
-      id = "wd:Q" + id;
-      var query = "SELECT ?pLabel ?val WHERE { " + id + " ?prop ?val . ?ps wikibase:directClaim ?prop . ?ps rdfs:label ?pLabel . FILTER((LANG(?pLabel)) = '" + lang + "')}";
-
-      $scope.get_wikidata_info(query, lang);
+      $scope.get_wikidata_info(id, lang);
     };
 
     //quering function
-    $scope.get_wikidata_info = function(query, lang){
+    $scope.get_wikidata_info = function(id, lang){
 
-      $http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
-        .then(function(data){
-
-          if(data.data.results.bindings.length !== 0){
+      //$http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
+      $http({
+        url:'http://localhost:8000/entity?id='+ id + '&lang=' + lang,
+        method: 'GET',
+        withCredentials: false
+      }).then(function(response){
+          if(response.data.length !== 0){
             $scope.alerts = [];
             $scope.data_flag = true;
-            $scope.entity_data = data.data.results.bindings;
+            $scope.entity_data = response.data;
 
-            $scope.info_box = $scope.filter_properties(data.data.results.bindings, lang);
+            $scope.info_box = $scope.filter_properties(response.data, lang);
 
             //random order & select first 10
             $scope.info_box = $scope.baseline_infobox($scope.info_box);
@@ -115,6 +115,7 @@ angular.module('infoBoxApp')
 
     //this function creates the baseline infobox for each entity, selecting 10 properties at random
     $scope.baseline_infobox = function(properties){
+      //add label as 1rst
       return _.shuffle(properties).slice(0,10);
     };
 
