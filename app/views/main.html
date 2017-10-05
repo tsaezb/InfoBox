@@ -6,15 +6,27 @@
       <div class="input-group-addon">Q</div>
       <input ng-model="search_id" class="form-control" type="text" placeholder="Type Wikidata ID">
     </div>
-    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id,lang)" class="btn btn-primary">Get InfoBox</button>
+    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id,lang, strategy)" class="btn btn-primary">Get InfoBox</button>
   </form>
 </div>
 
 <div ng-show="data_flag">
   <table align="center" class="table table-bordered table-striped">
-    <tr ng-repeat="entry in info_box">
-      <th>{{entry.pLabel.value}}:</th>
-      <td>{{entry.val.value}}</td>
-    </tr>
+    <col>
+    <col>
+    <thead>
+      <th></th>
+      <th class="infobox-header">{{entity_label}}</th>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Description:</th>
+        <td>{{entity_description}}</td>
+      </tr>
+      <tr ng-repeat="entry in info_box">
+        <th>{{entry.pLabel.value}}:</th>
+        <td>{{entry.val.value}}</td>
+      </tr>
+    </tbody>
   </table>
 </div>
