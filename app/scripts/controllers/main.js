@@ -74,6 +74,23 @@ angular.module('infoBoxApp')
       $scope.get_wikidata_info(id, lang, strat);
     };
 
+    $scope.group_properties = function(prop){
+      var mapping = {};
+
+      for (var i = prop.length - 1; i >= 0; i--) {
+        if (prop[i].prop.value in mapping) {
+          mapping[prop[i].prop.value].values += (', ' + prop[i].valLabel.value);
+        }
+        else {
+          mapping[prop[i].prop.value] = {
+            "label" : prop[i].pLabel.value,
+            "values" : prop[i].valLabel.value
+          };
+        }
+      }
+      return mapping;
+    };
+
     //quering function
     $scope.get_wikidata_info = function(id, lang, strat){
 
@@ -89,7 +106,7 @@ angular.module('infoBoxApp')
             $scope.entity_label = response.data.label;
             $scope.entity_description = response.data.description;
             $scope.entity_image = response.data.image;
-            $scope.info_box = response.data.properties;
+            $scope.info_box = $scope.group_properties(response.data.properties);
           }
 
           else{

@@ -30,9 +30,9 @@
         <th>Description:</th>
         <td>{{entity_description}}</td>
       </tr>
-      <tr ng-repeat="entry in info_box">
-        <th>{{entry.pLabel.value}}:</th>
-        <td>{{entry.valLabel.value}}</td>
+      <tr ng-repeat="(prop_id, data) in info_box">
+        <th>{{data.label}}:</th>
+        <td>{{data.values}}</td>
       </tr>
     </tbody>
   </table>
