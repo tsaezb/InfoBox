@@ -16,8 +16,23 @@ angular.module('infoBoxApp')
 
 
     //add form for this field later
-    $scope.lang = "en";
-    $scope.strategy = "baseline";
+
+    $scope.langs = [
+      { "val": "en"},
+      { "val": "es"}
+    ];
+
+    $scope.language = $scope.langs[0];
+
+    $scope.strats = [
+      { "val": "baseline"},
+      { "val": "frecuency"},
+      { "val": "pagerank"},
+      { "val": "multiplicative"},
+      { "val": "sum"}
+    ];
+
+    $scope.strategy = $scope.strats[0];
 
     $scope.addAlert = function(str) {
       if ($scope.alerts !== []) {
@@ -55,6 +70,7 @@ angular.module('infoBoxApp')
     };
 
     $scope.get_entity_info = function(id, lang, strat){
+      $scope.data_flag = false;
       $scope.get_wikidata_info(id, lang, strat);
     };
 

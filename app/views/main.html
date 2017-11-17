@@ -6,7 +6,13 @@
       <div class="input-group-addon">Q</div>
       <input ng-model="search_id" class="form-control" type="text" placeholder="Type Wikidata ID">
     </div>
-    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id,lang, strategy)" class="btn btn-primary">Get InfoBox</button>
+    <button ng-disabled="!regex.test(search_id)" ng-click="get_entity_info(search_id,language.val, strategy.val)" class="btn btn-primary">Get InfoBox</button>
+    <div class="select-group">
+      <select class="form-control" id="language" ng-model="language" ng-options="lang as lang.val for lang in langs">
+      </select>
+      <select class="form-control" id="strategy" ng-model="strategy" ng-options="strat as strat.val for strat in strats">
+      </select>
+    </div>
   </form>
 </div>
 
@@ -25,7 +31,7 @@
       </tr>
       <tr ng-repeat="entry in info_box">
         <th>{{entry.pLabel.value}}:</th>
-        <td>{{entry.val.value}}</td>
+        <td>{{entry.valLabel.value}}</td>
       </tr>
     </tbody>
   </table>
