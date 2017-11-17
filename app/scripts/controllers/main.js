@@ -88,6 +88,7 @@ angular.module('infoBoxApp')
             $scope.data_flag = true;
             $scope.entity_label = response.data.label;
             $scope.entity_description = response.data.description;
+            $scope.entity_image = response.data.image;
             $scope.info_box = response.data.properties;
           }
 
