@@ -104,8 +104,21 @@ angular.module('infoBoxApp')
             $scope.alerts = [];
             $scope.data_flag = true;
             $scope.entity_label = response.data.label;
-            $scope.entity_description = response.data.description;
-            $scope.entity_image = response.data.image;
+
+            if ('description' in response.data) {
+              $scope.entity_description = response.data.description;
+            }
+            else {
+              $scope.entity_description = undefined;
+            }
+
+            if ('image' in response.data) {
+              $scope.entity_image = response.data.image;
+            }
+            else {
+              $scope.entity_image = undefined;
+            }
+
             $scope.info_box = $scope.group_properties(response.data.properties);
           }
 

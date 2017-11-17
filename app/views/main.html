@@ -18,7 +18,7 @@
 
 <div ng-show="data_flag">
   <img ng-src="{{entity_image}}" align="center" class="image-container">
-  <table align="center" class="table table-bordered table-striped" style="margin-top:25px;">
+  <table align="center" class="table table-bordered table-striped" style="margin-top:25px;max-width: 500px;">
     <col>
     <col>
     <thead>
@@ -26,7 +26,7 @@
       <th class="infobox-header">{{entity_label}}</th>
     </thead>
     <tbody>
-      <tr>
+      <tr ng-if="entity_description">
         <th>Description:</th>
         <td>{{entity_description}}</td>
       </tr>
