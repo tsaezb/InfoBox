@@ -77,18 +77,19 @@ angular.module('infoBoxApp')
     $scope.group_properties = function(prop){
       var mapping = {};
 
-      for (var i = prop.length - 1; i >= 0; i--) {
+      for (var i = 0; i <= prop.length - 1; i++) {
         if (prop[i].prop.value in mapping) {
           mapping[prop[i].prop.value].values += (', ' + prop[i].valLabel.value);
         }
         else {
           mapping[prop[i].prop.value] = {
             "label" : prop[i].pLabel.value,
-            "values" : prop[i].valLabel.value
+            "values" : prop[i].valLabel.value,
+            "index" : i
           };
         }
       }
-      return mapping;
+      return _.values(mapping);
     };
 
     //quering function

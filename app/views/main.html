@@ -30,7 +30,7 @@
         <th>Description:</th>
         <td>{{entity_description}}</td>
       </tr>
-      <tr ng-repeat="(prop_id, data) in info_box">
+      <tr ng-repeat="(prop_id, data) in info_box | orderBy: 'index'">
         <th>{{data.label}}:</th>
         <td>{{data.values}}</td>
       </tr>
