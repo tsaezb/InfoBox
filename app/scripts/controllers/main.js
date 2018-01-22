@@ -32,7 +32,7 @@ angular.module('infoBoxApp')
       { "val": "sum"}
     ];
 
-    $scope.strategy = $scope.strats[0];
+    $scope.strategy = $scope.strats[3];
 
     $scope.addAlert = function(str) {
       if ($scope.alerts !== []) {
@@ -95,9 +95,9 @@ angular.module('infoBoxApp')
     //quering function
     $scope.get_wikidata_info = function(id, lang, strat){
 
-      //$http.get("https://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
+      //$http.get("http://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
       $http({
-        url:'http://localhost:8000/entity?id='+ id + '&lang=' + lang + '&strategy=' + strat,
+        url:'http://34.209.1.113/entity?id='+ id + '&lang=' + lang + '&strategy=' + strat,
         method: 'GET',
         withCredentials: false
       }).then(function(response){
