@@ -97,7 +97,7 @@ angular.module('infoBoxApp')
 
       //$http.get("http://query.wikidata.org/bigdata/namespace/wdq/sparql?query=" + encodeURI(query))
       $http({
-        url:'http://34.209.1.113/entity?id='+ id + '&lang=' + lang + '&strategy=' + strat,
+        url:'https://infobox.m4droid.com/entity?id='+ id + '&lang=' + lang + '&strategy=' + strat,
         method: 'GET',
         withCredentials: false
       }).then(function(response){
@@ -114,7 +114,7 @@ angular.module('infoBoxApp')
             }
 
             if ('image' in response.data) {
-              $scope.entity_image = response.data.image;
+              $scope.entity_image = response.data.image.replace("http://", "https://");
             }
             else {
               $scope.entity_image = undefined;
